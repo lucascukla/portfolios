@@ -68,12 +68,12 @@ class quicksort:
             return self.array
 
     def mayor_a_menor(self):
-        if self.flag_ok == True:
-            if len(self.array) > 1:
+        if self.flag_ok == True:        # solo realiza el ordenamiento si paso el filtro previo
+            if len(self.array) > 1:     # no ordena si la lista tiene un solo elemento
                 _low = []
                 _high = []
-                distr_equals = False
-                for i in self.array:
+                distr_equals = False    # artilugio paradistribuir numeros iguales al pivote entre partes
+                for i in self.array:    # aplicacion del algoritmo, se divide en 2
                     if i > self.pivote:
                         # print(i, " va para High")
                         _high.append(i)
@@ -90,7 +90,7 @@ class quicksort:
                             # print(i, " va para Low")
                             distr_equals = True
                 
-                if len(_high) > 1:
+                if len(_high) > 1:      # luego se realiza el mismo procedimiento con cada parte
                     _high = quicksort(_high).mayor_a_menor()
                 if len(_low) > 1:
                     _low = quicksort(_low).mayor_a_menor()
@@ -107,12 +107,12 @@ class quicksort:
             
     
     def menor_a_mayor(self):
-        if self.flag_ok == True:
-            if len(self.array) > 1:
+        if self.flag_ok == True:        # solo realiza el ordenamiento si paso el filtro previo
+            if len(self.array) > 1:     # no ordena si la lista tiene un solo elemento
                 _low = []
                 _high = []
-                distr_equals = False
-                for i in self.array:
+                distr_equals = False    # artilugio paradistribuir numeros iguales al pivote entre partes
+                for i in self.array:    # aplicacion del algoritmo, se divide en 2
                     if i < self.pivote:
                         # print(i, " va para High")
                         _high.append(i)
@@ -129,7 +129,7 @@ class quicksort:
                             # print(i, " va para Low")
                             distr_equals = True
                 
-                if len(_high) > 1:
+                if len(_high) > 1:      # luego se realiza el mismo procedimiento con cada parte
                     _high = quicksort(_high).menor_a_mayor()
                 if len(_low) > 1:
                     _low = quicksort(_low).menor_a_mayor()
@@ -150,7 +150,7 @@ class quicksort:
 
 arreglo = []
 aux = []
-for i in range(5000):
+for i in range(5):
     arreglo.append(randint(-100, 100))
     aux.append((random()-0.5)*200)
 arreglo.extend(aux)
@@ -168,8 +168,8 @@ print("duracion [ms] -> ",(stop - start)/1000000)
 print("pivote ->", _test.pivote)
 print("media ->", mean(_test.array))
 print("mediana ->", median(_test.array))
-# print("array: ")
-# print(_test.array)
+print("array: ")
+print(_test.array)
 
 if _test.flag_ok:
     print("anda")
