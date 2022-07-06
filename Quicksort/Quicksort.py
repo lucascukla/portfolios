@@ -1,18 +1,16 @@
-# from numpy import average
-from cmath import nan
 from random import randint, random
 from statistics import mean, median
 from time import time_ns
 
 class quicksort:
-    pivote = ""         # pivote de mi algoritmo
+    pivote = 0         # pivote de mi algoritmo
     array = []          # array a ordenar
-    flag_pivote = False # indica que no se coloco el pivote manualmente
+    # flag_pivote = False # indica que no se coloco el pivote manualmente
     indice = 0          # indice donde se encuentra el pivote
     flag_ok = False     # indica cuando algo salio mal
     
     ##  constructores   ##
-    def __init__(self, *args):                  # puede recibir varios argumentos
+    def __init__(self, *args):                  # puede recibir varios argumentos: (lista) y (lista, pivote)
         if len(args) == 0 or len(args) > 2:     # si recibe menos de 1 o mas de 2 argumentos
             self.flag_ok = False                # rechaza la lista
             print("Faltan o sobran argumentos")
@@ -36,7 +34,8 @@ class quicksort:
                     print("ningun elemento de la lista es un numero")
                     return
                 
-                if type(self.array[indice]) != type(0) and type(self.array[indice]) != type(0.0):     # recorro la lista para asegurarme que todos sean numeros
+                if type(self.array[indice]) != type(int) and type(self.array[indice]) != type(float):   # recorro la lista para asegurarme que todos sean numeros
+                                                                                                        # capaz haria falta poner double y otros tipos de datos tambien
                     print("Error en datos del array, se eliminará el elemento numero", indice, " -> ", self.array[indice])
                     self.array.remove(self.array[indice])   # si un elemento no es un numero lo elimino
                 else:
