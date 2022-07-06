@@ -34,8 +34,8 @@ class quicksort:
                     print("ningun elemento de la lista es un numero")
                     return
                 
-                if type(self.array[indice]) != type(int) and type(self.array[indice]) != type(float):   # recorro la lista para asegurarme que todos sean numeros
-                                                                                                        # capaz haria falta poner double y otros tipos de datos tambien
+                # recorro la lista para asegurarme que todos sean numeros
+                if type(self.array[indice]) != type(0) and type(self.array[indice]) != type(0.0):   
                     print("Error en datos del array, se eliminará el elemento numero", indice, " -> ", self.array[indice])
                     self.array.remove(self.array[indice])   # si un elemento no es un numero lo elimino
                 else:
