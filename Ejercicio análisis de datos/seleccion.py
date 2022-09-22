@@ -78,47 +78,29 @@ plt.show()
 
 
 # luego voy a hacer un grafico de barras que indique cuantos jugadores tenemos en cada posición
-# para hacer esto debo hacer one hot encoding
-pos_dummies = pd.get_dummies(players_AR.player_positions, prefix='pos')
 
-# las siguientes lineas forman parte de un camino que abandoné
-# print(pos_dummies.head())   # veo que no funciona, ya que agrupa los que tienen un array como array
-# pos_ohe = pos_dummies.filter(regex = ".*,.*")       # estas son las columnas que no deben estar
+# en primera instancia pretendía utilizar one hot encoding, pero no funcionó, entonces lo hice
+# de la siguiente manera:
 
-# COMO NO FUNCIONO HARE MI PROPIO ONE HOT ENCODING  ###############################################
-pos_ohe = []                # defino las columnas que si deben estar
-dict_dummies = {}           # creo un diccionario para agregar nuevas columnas
-for i in pos:
-    pos_ohe.append("pos_"+i)
-    dict_dummies["pos_"+i] = 0
+dict_acu = {}               # creo un diccionario para acumular cuantos jugadores hay en cada posición
+for i in pos:               # recorro las posiciones de los jugadores, que guardé anteriormente
+    dict_acu["pos_"+i] = 0  # inicialmente tengo cero jugadores en cada posición
 
-pos_dummies_final = pd.DataFrame()  # creo un dataframe vacio, para el one hot encoding
-dict_dummies_acu = dict_dummies     # tendra el acumulado de cada posicion
-print(dict_dummies_acu)
-for i in pos_ohe:       # agrego columna por columna para hacer el one hot encoding
-    pos_dummies_final[i] = None
 
 for i in range(int(players_AR.shape[0])):   # recorro la lista filtrada por columnas de interés
-    aux = "pos_"
-    new_row_dict = dict_dummies                     # esta será la fila que se agregará al final del dataframe
+    aux = "pos_"                            # variable auxiliar usada para guardar la posición a contar
+    # new_row_dict = dict_dummies                     # esta será la fila que se agregará al final del dataframe
     for j in players_AR.player_positions.iloc[i]:   # recorro las posiciones de cada jugador, letra a letra
         if(j != "," and j != " "):                  # aquí separo las palabras (posiciones) separadas por coma
             aux+=j                                  # construyo la palabra
         elif aux != "pos_":                         # si el caracter es una coma o un espacio, y se modifico la palabra original
-            if aux in pos_dummies_final.columns:    # y si la palabra está incluida en las columnas del dataframe
-                new_row_dict[aux] = 1               # anota un 1 en ese lugar
-                # dict_dummies_acu[aux] += 1
-                # setattr(dict_dummies_acu, aux, getattr(dict_dummies_acu, aux)+1)
-            else:
-                print(aux, " no está")              # de lo contrario tira un mensaje indicando que no esta en el dataframe
-            aux = "pos_"
+            dict_acu[aux] += 1                      # acumulo un jugador en la posición
+            aux = "pos_"                            # luego "reseteo" el valor de la variable auxiliar
     
-    new_row = pd.Series(new_row_dict)               # al final agrego la fila al dataframe
-    pos_dummies_final = pd.concat([pos_dummies_final, new_row.to_frame().T], ignore_index=True)
     
     
 # print(pos_dummies_final.head())
-print(dict_dummies_acu)
+print(dict_acu)
 
 # print(players_AR.player_positions.ninuque())
 
