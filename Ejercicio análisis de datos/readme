@@ -1,5 +1,35 @@
 Primero: aún estoy desarrollando el proyecto :)
 
 consigna:
-realizar un análisis de los jugadores argentinos en el fifa2022, ver donde juegan los jugadores, y hacer una selección
-(la selección argentina) de 2022
+realizar un análisis de los jugadores argentinos en el fifa2022:
+1 ) realizar un filtrado de los jugadores por país (en este caso Argentina)
+2 ) realizar un filtrado en funcion de los parámetros que mas nos interesen (habilidades),
+    excluyendo del dataframe los parámetros que no utilizemos o no pretendamos utilizar.
+3 ) graficar la distribución del puntaje promedio (overall) de los jugadores, debería dar algo
+    así como una campana de gauss (o al menos parecido)
+4 ) realizar un gráfico de barras de la cantidad de jugadores que juega en cada posición
+5 ) realizar la selección de los 26 jugadores para el mundial en función del overall y las posiciones
+    donde juega cada uno:
+    sabiendo las posiciones, e investigando donde se posiciona cada una en la cancha en
+    https://www.fifplay.com/fifa-22-position-modifier-cards/ , se definen los siguientes cupos:
+
+    GK (arquero):                         3 jugadores
+    CB (defensor central):                3 jugadores
+    RB (defensor derecho):                2 jugadores
+    LB (defensor izquierdo):              2 jugadores
+    RWB (lateral derecho):                2 jugadores
+    LWB (lateral izquierdo):              2 jugadores
+    CDM (mediocampo defensivo central):   2 jugadores
+    CM (mediocampo central):              2 jugadores
+    RM (mediocampo derecho):              2 jugadores
+    LM (mediocampo izquierdo):            2 jugadores
+    CAM (mediocampo delantero central):   2 jugadores
+    CF (delantero central):               2 jugadores
+    RW (delantero derecho):               2 jugadores
+    LW (delantero izquierdo):             2 jugadores
+    ST (delantero pateador):              2 jugadores
+
+    se debe realizar la clasificación hasta completar los 26 jugadores, sin importar si no se completó
+    algún cupo, se parte de la suposición de que tendremos al menos uno o 2 jugadores en cada posición,
+    y normalmente un jugador no solo juega en una sola posición, sinó que tiene una segunda posición de
+    juego.

@@ -47,14 +47,14 @@ print("Posiciones:\n", pos, "\n-----------------------\n")
 # RWB (lateral derecho):                2 jugadores
 # LWB (lateral izquierdo):              2 jugadores
 # CDM (mediocampo defensivo central):   2 jugadores
-#CM (mediocampo central):               2 jugadores
-#RM (mediocampo derecho):               2 jugadores
-#LM (mediocampo izquierdo):             2 jugadores
-#CAM (mediocampo delantero central):    2 jugadores
-#CF (delantero central):                2 jugadores
-#RW (delantero derecho):                2 jugadores
-#LW (delantero izquierdo):              2 jugadores
-#ST (delantero pateador):               2 jugadores
+# CM (mediocampo central):               2 jugadores
+# RM (mediocampo derecho):               2 jugadores
+# LM (mediocampo izquierdo):             2 jugadores
+# CAM (mediocampo delantero central):    2 jugadores
+# CF (delantero central):                2 jugadores
+# RW (delantero derecho):                2 jugadores
+# LW (delantero izquierdo):              2 jugadores
+# ST (delantero pateador):               2 jugadores
 
 ##############################################################################################
 
@@ -76,15 +76,13 @@ print("El DataFrame filtrado tiene", players_AR.shape[0], "jugadores de nacional
 players_AR.overall.plot(kind = 'density', legend = 'overall', title = 'Puntaje promedio', )
 plt.show()
 
-# print(players_AR.groupby(['player_positions']).mean().head())
 
-
-
-# luego voy a hacer un grafico de barras de las posiciones de jugadores
+# luego voy a hacer un grafico de barras que indique cuantos jugadores tenemos en cada posición
 # para hacer esto debo hacer one hot encoding
 pos_dummies = pd.get_dummies(players_AR.player_positions, prefix='pos')
-# print(pos_dummies.head())   # veo que no funciona, ya que agrupa los que tienen un array como array
 
+# las siguientes lineas forman parte de un camino que abandoné
+# print(pos_dummies.head())   # veo que no funciona, ya que agrupa los que tienen un array como array
 # pos_ohe = pos_dummies.filter(regex = ".*,.*")       # estas son las columnas que no deben estar
 
 # COMO NO FUNCIONO HARE MI PROPIO ONE HOT ENCODING  ###############################################
