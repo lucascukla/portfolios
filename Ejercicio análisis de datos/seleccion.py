@@ -90,40 +90,28 @@ for i in pos:               # recorro las posiciones de los jugadores, que guard
 for i in range(int(players_AR.shape[0])):   # recorro la lista filtrada por columnas de interés
     aux = "pos_"                            # variable auxiliar usada para guardar la posición a contar
     # new_row_dict = dict_dummies                     # esta será la fila que se agregará al final del dataframe
+    acu = 0                                         # acumula para contar las letras
+    print(players_AR.player_positions.iloc[i])
     for j in players_AR.player_positions.iloc[i]:   # recorro las posiciones de cada jugador, letra a letra
+        acu += 1
         if(j != "," and j != " "):                  # aquí separo las palabras (posiciones) separadas por coma
             aux+=j                                  # construyo la palabra
-        elif aux != "pos_":                         # si el caracter es una coma o un espacio, y se modifico la palabra original
+            print(aux)
+            # print("len: ", len(players_AR.player_positions.iloc[i]), "\tacu: ", acu)
+            
+        if aux != "pos_" and (j == "," or j == " " or acu == len(players_AR.player_positions.iloc[i])):                         # si el caracter es una coma o un espacio, y se modifico la palabra original
             dict_acu[aux] += 1                      # acumulo un jugador en la posición
+            print(aux, ":", dict_acu[aux])
             aux = "pos_"                            # luego "reseteo" el valor de la variable auxiliar
     
-    
-    
-# print(pos_dummies_final.head())
 print(dict_acu)
 
-# print(players_AR.player_positions.ninuque())
+pos_jugadores_ar = pd.Series(dict_acu)              # convierto mi diccionario en una serie
 
-# ahora debo juntar los 2 dataframes
+# intento de traducir los nombres de las posiciones de los jugadores
+# posiciones_es = {'pos_GK':'Arquero', 'pos_CB':'Defensor central', 'pos_RB':'defensor derecho', 'pos_LB':'defensor izquierdo', 'pos_RWB':'lateral derecho', 'pos_LWB':'lateral izquierdo', 'pos_CDM':'mediocampo defensivo central', 'pos_CM':'mediocampo central', 'pos_RM':'mediocampo derecho', 'pos_LM':'mediocampo izquierdo', 'pos_CAM':'mediocampo delantero central', 'pos_CF':'delantero central', 'pos_RW':'delantero derecho', 'pos_LW':'delantero izquierdo', 'pos_ST':'Nueve'}
+# pos_jugadores_ar_es = pos_jugadores_ar.rename(columns = {'pos_GK':'Arquero', 'pos_CB':'Defensor central', 'pos_RB':'defensor derecho', 'pos_LB':'defensor izquierdo', 'pos_RWB':'lateral derecho', 'pos_LWB':'lateral izquierdo', 'pos_CDM':'mediocampo defensivo central', 'pos_CM':'mediocampo central', 'pos_RM':'mediocampo derecho', 'pos_LM':'mediocampo izquierdo', 'pos_CAM':'mediocampo delantero central', 'pos_CF':'delantero central', 'pos_RW':'delantero derecho', 'pos_LW':'delantero izquierdo', 'pos_ST':'Nueve'})
 
-    
-    
-    
-    
-    
-    
-    
-    
-    # if(aux not in pos and aux != ""):
-    #     pos.append(aux)
-        
-    # aux = "pos_"
-    # aux2 = i.player_positions
-    # for j in aux2:
-        
-
-
-# luego voy a hacer un grafico de dispercion de la puntuacion general en
-# funcion de las edades de los jugadores
-
-#luego tengo que hacer la seleccion de los 26 jugadores en funcion de lo definido anteriormente
+pos_jugadores_ar = pos_jugadores_ar.sort_values(ascending=False)
+pos_jugadores_ar.plot(kind='bar', legend='jugadores por posicion en Argentina')
+plt.show()
