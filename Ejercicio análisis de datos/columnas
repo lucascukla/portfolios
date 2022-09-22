@@ -1,0 +1,110 @@
+sofifa_id
+player_url
+short_name = nombre corto
+long_name
+player_positions = posicion
+overalls = puntuacion general
+potential = potencial
+value_eur
+wage_eur
+age = edad
+double
+height_cm = altura en cm
+weight_kg = peso
+club_team_id
+club_name = nombre del club
+league_name
+league_level
+club_position
+club_jersey_number
+club_loaned_from
+club_joined
+club_contract_valid_until
+nationality_id
+nationality_name
+nation_team_id
+nation_position
+nation_jersey_number
+preferred_foot = pie preferido
+weak_foot = pie ábil
+skill_moves = habilidades de movimiento
+international_reputation = reputacion internacional
+work_rate = ritmo de trabajp
+body_type
+real_face
+release_clause_eur
+player_tags
+player_traits
+pace = ritmo
+shooting = patada
+passing = pase
+dribbling = regate
+defending = defensa
+physical = fisico
+attacking_crossing = ataque cruzando
+attacking_finishing = finalizacion del ataque
+attacking_heading_accuracy = presicion de cabezaso
+attacking_short_passing = ataque pase corto
+attacking_volleys = ataque al voleo
+skill_dribbling = habilidad de regate
+skill_curve = tiros curvos
+skill_fk_accuracy = presicion
+skill_long_passing = pase largo
+skill_ball_control = control del balon
+movement_acceleration = aceleracion
+movement_sprint_speed = velocidad
+movement_agility = agilidad
+movement_reactions = reacciones
+movement_balance = balance
+power_shot_power = potencia de tiruo
+power_jumping = potencia de salto
+power_stamina = resistencia
+power_strength = fuerza
+power_long_shots = potencia tiros largos
+mentality_aggression = potencia de agreción
+mentality_interceptions = mentalidad de intercepciones
+mentality_positioning = mentalidad en posicionamiento
+mentality_vision = vision mental
+mentality_penalties = metalidad en penales
+mentality_composure = mentalidad en compostura
+defending_marking_awareness = defender marcando conciencia
+defending_standing_tackle = placaje defensivo de pie
+defending_sliding_tackle = placa deslizante defensiva
+goalkeeping_diving = salto de portero
+goalkeeping_handling = manejo de porteros
+goalkeeping_kicking = patadas de portero
+goalkeeping_positioning = posicionamiento de la portería
+goalkeeping_reflexes = reflejos de portero
+goalkeeping_speed = velocidad de portería
+ls
+st
+rs
+l w
+lf
+cf
+RF
+r w
+The m
+cam
+RAM
+lm
+lcm
+cm
+rcm
+rm
+lwb
+ldm
+cdm
+rdm
+rwb
+lb
+lcb
+cb
+rcb
+rb
+gk
+player_face_url
+club_logo_url
+club_flag_url
+nation_logo_url
+nation_flag_url
