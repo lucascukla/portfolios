@@ -8,7 +8,9 @@ realizar un análisis de los jugadores argentinos en el fifa2022:
 3 ) graficar la distribución del puntaje promedio (overall) de los jugadores, debería dar algo
     así como una campana de gauss (o al menos parecido)
 4 ) realizar un gráfico de barras de la cantidad de jugadores que juega en cada posición
-5 ) realizar la selección de los 26 jugadores para el mundial en función del overall y las posiciones
+5 ) realizar un gráfico de dispersión de el overall de los jugadores en funcion de su edad
+6 ) generar una matriz de correlacion de los parámetros de interes de los jugadores argentinos
+7 ) realizar la selección de los 26 jugadores para el mundial en función del overall y las posiciones
     donde juega cada uno:
     sabiendo las posiciones, e investigando donde se posiciona cada una en la cancha en
     https://www.fifplay.com/fifa-22-position-modifier-cards/ , se definen los siguientes cupos:

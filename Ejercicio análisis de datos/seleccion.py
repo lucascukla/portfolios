@@ -146,5 +146,7 @@ plt.show()
 # lo cual tiene sentido. El overall sería como una ponderación de todo. Se odrían deducir 
 # variables que engloben eso pero cumplirían una función similar al overall
 
+#
 
-# print(players_AR.)
+
+# print(players_AR.shape, "\t", )
