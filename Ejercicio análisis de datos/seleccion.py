@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Importo la lista de jugadores con sus caracteristias
 df_f22 = pd.read_csv("players_22.csv")
@@ -91,20 +92,20 @@ for i in range(int(players_AR.shape[0])):   # recorro la lista filtrada por colu
     aux = "pos_"                            # variable auxiliar usada para guardar la posición a contar
     # new_row_dict = dict_dummies                     # esta será la fila que se agregará al final del dataframe
     acu = 0                                         # acumula para contar las letras
-    print(players_AR.player_positions.iloc[i])
+    # print(players_AR.player_positions.iloc[i])
     for j in players_AR.player_positions.iloc[i]:   # recorro las posiciones de cada jugador, letra a letra
         acu += 1
         if(j != "," and j != " "):                  # aquí separo las palabras (posiciones) separadas por coma
             aux+=j                                  # construyo la palabra
-            print(aux)
+            # print(aux)
             # print("len: ", len(players_AR.player_positions.iloc[i]), "\tacu: ", acu)
             
         if aux != "pos_" and (j == "," or j == " " or acu == len(players_AR.player_positions.iloc[i])):                         # si el caracter es una coma o un espacio, y se modifico la palabra original
             dict_acu[aux] += 1                      # acumulo un jugador en la posición
-            print(aux, ":", dict_acu[aux])
+            # print(aux, ":", dict_acu[aux])
             aux = "pos_"                            # luego "reseteo" el valor de la variable auxiliar
     
-print(dict_acu)
+# print(dict_acu)
 
 pos_jugadores_ar = pd.Series(dict_acu)              # convierto mi diccionario en una serie
 
@@ -115,3 +116,35 @@ pos_jugadores_ar = pd.Series(dict_acu)              # convierto mi diccionario e
 pos_jugadores_ar = pos_jugadores_ar.sort_values(ascending=False)
 pos_jugadores_ar.plot(kind='bar', legend='jugadores por posicion en Argentina')
 plt.show()
+
+# realizar un grafico de dispercion del puntage general en funcion de la edad
+players_AR.plot.scatter('age', 'overall')
+plt.show()  # mirando así no me dice mucho, pero en teoría debería ser como una parábola invertida
+
+# realizar una matriz de correlacion
+corr_players_AR = players_AR.corr()
+# corr2 = round(corr_players_AR, 2)     # son tantas lineas que no se pueden ver
+# print(corr2)
+
+# plt.matshow(corr_players_AR)
+
+sns.heatmap(corr_players_AR, annot=False)   # se observa gran correlacion entre las aptitudes físicas
+plt.show()
+
+correlations_players_AR = {}
+for i in range(len(corr_players_AR.columns)-1):
+    j = i+1
+    while j < len(corr_players_AR.columns):
+        correlations_players_AR[corr_players_AR.columns[i]+" vs "+corr_players_AR.columns[j]] = corr_players_AR[corr_players_AR.columns[i]][corr_players_AR.columns[j]]
+        # print("i: ", i, ", j: ", j, " -> ", round(corr_players_AR[corr_players_AR.columns[i]][corr_players_AR.columns[j]], 3))
+        j +=1
+
+corr_players_AR_s = pd.Series(correlations_players_AR).sort_values(ascending=False)
+corr_players_AR_s[0:25].plot(kind='bar', legend='correlaciones de mayor a menor') 
+plt.show()  
+# en el grafico no se entiende nada, pero se ve que muchas muchas variables estan correlacionadas,
+# lo cual tiene sentido. El overall sería como una ponderación de todo. Se odrían deducir 
+# variables que engloben eso pero cumplirían una función similar al overall
+
+
+# print(players_AR.)
