@@ -99,12 +99,12 @@ for i in range(int(players_AR.shape[0])):   # recorro la lista filtrada por colu
             aux+=j                                  # construyo la palabra
             # print(aux)
             # print("len: ", len(players_AR.player_positions.iloc[i]), "\tacu: ", acu)
-            
+
         if aux != "pos_" and (j == "," or j == " " or acu == len(players_AR.player_positions.iloc[i])):                         # si el caracter es una coma o un espacio, y se modifico la palabra original
             dict_acu[aux] += 1                      # acumulo un jugador en la posición
             # print(aux, ":", dict_acu[aux])
             aux = "pos_"                            # luego "reseteo" el valor de la variable auxiliar
-    
+
 # print(dict_acu)
 
 pos_jugadores_ar = pd.Series(dict_acu)              # convierto mi diccionario en una serie
@@ -140,13 +140,46 @@ for i in range(len(corr_players_AR.columns)-1):
         j +=1
 
 corr_players_AR_s = pd.Series(correlations_players_AR).sort_values(ascending=False)
-corr_players_AR_s[0:25].plot(kind='bar', legend='correlaciones de mayor a menor') 
-plt.show()  
+corr_players_AR_s[0:25].plot(kind='bar', legend='correlaciones de mayor a menor')
+plt.show()
 # en el grafico no se entiende nada, pero se ve que muchas muchas variables estan correlacionadas,
-# lo cual tiene sentido. El overall sería como una ponderación de todo. Se odrían deducir 
+# lo cual tiene sentido. El overall sería como una ponderación de todo. Se odrían deducir
 # variables que engloben eso pero cumplirían una función similar al overall
 
-#
+# antes de hacer la selección hay que hacer un one hoy encoding, como vimos que no funcionó usando dummies,
+# uso el método que usé para contar los jugadores por posición
+
+# COMO NO FUNCIONO HARE MI PROPIO ONE HOT ENCODING  ###############################################
+# pos_ohe = []                # defino las columnas que si deben estar
+
+dict_dummies = dict_acu             # creo un diccionario para agregar nuevas columnas
+pos_dummies = pd.DataFrame()        # creo un dataframe vacio, para el one hot encoding
+for i in dict_dummies:              # llevo a cero todos los valores
+    dict_dummies[i] = 0
+    pos_dummies[i] = None
+    
+print(pos_dummies.columns)
+
+for i in range(int(players_AR.shape[0])):           # recorro la lista filtrada por columnas de interés
+    aux = "pos_"
+    new_row_dict = dict_dummies                     # esta será la fila que se agregará al final del dataframe
+    acu = 0 
+    for j in players_AR.player_positions.iloc[i]:   # recorro las posiciones de cada jugador, letra a letra
+        acu += 1
+        if(j != "," and j != " "):                  # aquí separo las palabras (posiciones) separadas por coma
+            aux+=j                                  # construyo la palabra
+        
+        if aux != "pos_"and (j == "," or j == " " or acu == len(players_AR.player_positions.iloc[i])):                         # si el caracter es una coma o un espacio, y se modifico la palabra original
+            new_row_dict[aux] = 1                   # anota un 1 en ese lugar
+            aux = "pos_"
+
+    new_row = pd.Series(new_row_dict)               # al final agrego la fila al dataframe
+    pos_dummies= pd.concat([pos_dummies, new_row.to_frame().T], ignore_index=True)
 
 
-# print(players_AR.shape, "\t", )
+# print(pos_dummies.head())
+
+# concateno el one hot encoding
+players_AR_dummies = pd.concat([players_AR, pos_dummies], axis=1)
+# print(players_AR_dummies.columns)
+
