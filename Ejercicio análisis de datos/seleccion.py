@@ -41,21 +41,21 @@ print("Posiciones:\n", pos, "\n-----------------------\n")
 # sabiendo las posiciones, e investigando donde se posiciona cada una en la cancha en
 # https://www.fifplay.com/fifa-22-position-modifier-cards/ , se definen los siguientes cupos:
 
-# GK (arquero):                         3 jugadores
+# GK (arquero):                         2 jugadores
 # CB (defensor central):                3 jugadores
 # RB (defensor derecho):                2 jugadores
 # LB (defensor izquierdo):              2 jugadores
 # RWB (lateral derecho):                2 jugadores
 # LWB (lateral izquierdo):              2 jugadores
 # CDM (mediocampo defensivo central):   2 jugadores
-# CM (mediocampo central):               2 jugadores
-# RM (mediocampo derecho):               2 jugadores
-# LM (mediocampo izquierdo):             2 jugadores
-# CAM (mediocampo delantero central):    2 jugadores
-# CF (delantero central):                2 jugadores
-# RW (delantero derecho):                2 jugadores
-# LW (delantero izquierdo):              2 jugadores
-# ST (delantero pateador):               2 jugadores
+# CM (mediocampo central):              2 jugadores
+# RM (mediocampo derecho):              2 jugadores
+# LM (mediocampo izquierdo):            2 jugadores
+# CAM (mediocampo delantero central):   2 jugadores
+# CF (delantero central):               2 jugadores
+# RW (delantero derecho):               2 jugadores
+# LW (delantero izquierdo):             2 jugadores
+# ST (delantero pateador):              2 jugadores
 
 ##############################################################################################
 
@@ -157,12 +157,19 @@ pos_dummies = pd.DataFrame()        # creo un dataframe vacio, para el one hot e
 for i in dict_dummies:              # llevo a cero todos los valores
     dict_dummies[i] = 0
     pos_dummies[i] = None
-    
-print(pos_dummies.columns)
+
+
+# print(pos_dummies.columns)
+
+new_row_dict = dict_dummies 
 
 for i in range(int(players_AR.shape[0])):           # recorro la lista filtrada por columnas de interés
-    aux = "pos_"
-    new_row_dict = dict_dummies                     # esta será la fila que se agregará al final del dataframe
+    aux = "pos_"                    # esta será la fila que se agregará al final del dataframe
+    
+    for j in new_row_dict:          # por alguna razon tengo que setear todo a cero de esta forma para que no escriba mal en el dataframe
+         new_row_dict[j] = 0
+         
+    new_row_dict['index'] = int(players_AR.index[i])# le agrego una columna indice para poder concatenar con el dataframe principal
     acu = 0 
     for j in players_AR.player_positions.iloc[i]:   # recorro las posiciones de cada jugador, letra a letra
         acu += 1
@@ -175,6 +182,10 @@ for i in range(int(players_AR.shape[0])):           # recorro la lista filtrada 
 
     new_row = pd.Series(new_row_dict)               # al final agrego la fila al dataframe
     pos_dummies= pd.concat([pos_dummies, new_row.to_frame().T], ignore_index=True)
+    
+    
+pos_dummies = pos_dummies.astype({'index':'int64'}) # hago un casting con el indice, ya que por defecto guarda float
+pos_dummies.set_index(['index'], inplace = True)    # hago que la columna index sea el índice
 
 
 # print(pos_dummies.head())
@@ -183,3 +194,49 @@ for i in range(int(players_AR.shape[0])):           # recorro la lista filtrada 
 players_AR_dummies = pd.concat([players_AR, pos_dummies], axis=1)
 # print(players_AR_dummies.columns)
 
+# para hacer la selección uso el overall solamente, ya que entiendo que engloba todos los demás parámetros
+# podría hacer una selección considerando cada parámetro específico por posición, pero a fines de demostrar
+# que soy capaz de utilizar pandas, numpy, matplotlib y un poco de seaborn este código es suficiente
+# ademas no se tanto de futbol como para realizar dicho análisis de manera correcta.
+
+# primero ordeno de mayor a menor usando el overall
+players_AR_dummies_sorted = players_AR_dummies.sort_values(by='overall', ascending=False)
+# print(players_AR_dummies_sorted.head())
+
+for i in dict_acu:      # voy a reutilizar este diccionario 
+    dict_acu[i] = 0
+
+# y creo un diccionario que tiene la cantidad de jugadores por posicion que tenemos como objetivo
+dict_obj = {'pos_RW': 2, 'pos_ST': 2, 'pos_CF': 2, 'pos_LW': 2, 'pos_CAM': 2, 'pos_CM': 2, 'pos_GK': 2, 'pos_CDM': 2, 'pos_LM': 2, 'pos_CB': 3, 'pos_RB': 2, 'pos_RM': 2, 'pos_LB': 2, 'pos_RWB': 2, 'pos_LWB': 2}
+
+# plantilla de fila del datafreame de la seleccion
+dict_palyer_sel = {"short_name": 0, "player_positions": 0, "overall": 0, "potential": 0, "age": 0}
+
+
+df_sel_AR = pd.DataFrame()  # creo el dataframe para la seleccion
+cont = 0                    # contador de jugadores (van 26 al mundial)
+for i in range(int(players_AR_dummies_sorted.shape[0])):
+    new_player = dict_palyer_sel    # voy generando las nuevas filas del dataframe
+    for j in dict_obj:
+        if(players_AR_dummies_sorted.iloc[i][j] == 1 and dict_obj[j] > 0):  # me fijo en donde encaja el jugador y si hay posiciones disponibles para ese puesto
+            # completo la fila
+            new_player['short_name'] = players_AR_dummies_sorted.iloc[i]['short_name']
+            new_player['player_positions'] = players_AR_dummies_sorted.iloc[i]['player_positions']
+            new_player['overall'] = players_AR_dummies_sorted.iloc[i]['overall']
+            new_player['potential'] = players_AR_dummies_sorted.iloc[i]['potential']
+            new_player['age'] = players_AR_dummies_sorted.iloc[i]['age']
+            
+            new_row = pd.Series(new_player)               # al final agrego la fila al dataframe
+            df_sel_AR = pd.concat([df_sel_AR, new_row.to_frame().T], ignore_index=True)
+            # incremento el contador y descuento uno de la lista de vacantes
+            dict_obj[j] -=1
+            cont +=1
+            break   # salto al siguiente jugador
+        
+    if(cont >= 26): # cuando llego a 26 jugadores, concluyo la seleccion (ver https://cnnespanol.cnn.com/2022/06/23/fifa-mundial-watar-2022-26-jugadores-orix/#:~:text=La%20FIFA%20aprueba%20el%20aumento%20de%20convocados%20al%20Mundial%20de,a%2026%20jugadores%20por%20selecci%C3%B3n&text=(CNN%20Espa%C3%B1ol)%20%2D%2D%20Las%20selecciones,cambios%20sobre%20el%20f%C3%BAtbol%20internacional.    )
+        break
+
+print("\n-----------------------\n", "Seleccion Argentina:\n\n")
+print(df_sel_AR)        # se podría mejorar la seleccion, mas comparandola con la real
+# pero a fines de análisis de datos pude demostrar que puedo realizar un análisis, filtrado
+# y tratamiento de los mismos, aunque tengo mucho para mejorar.
