@@ -150,11 +150,12 @@ class quicksort:
 arreglo = []
 aux = []
 for i in range(5):
-    arreglo.append(randint(-100, 100))
+    arreglo.append(randint(-100, 100))          # cargo mi array con numeros random
     aux.append((random()-0.5)*200)
 arreglo.extend(aux)
 # arreglo = [10, 20, 15, 12.5, "coquito", 33, 1.1, -55, 101]
 # arreglo = [-6513, "coco", "pepe", 10, "toto", "lola", "lalo", 10, 10.1]
+# arreglo = ["-6513", "coco", "pepe", "10", "toto", "lola", "lalo", "10", "10.1"]
 
 _test = quicksort(arreglo)
 # print(_test.array)
@@ -164,11 +165,14 @@ start = time_ns()
 _test.mayor_a_menor()
 stop = time_ns()
 print("duracion [ms] -> ",(stop - start)/1000000)
-print("pivote ->", _test.pivote)
-print("media ->", mean(_test.array))
-print("mediana ->", median(_test.array))
-print("array: ")
-print(_test.array)
+if len(_test.array) > 0:
+    print("pivote ->", _test.pivote)
+    print("media ->", mean(_test.array))
+    print("mediana ->", median(_test.array))
+    print("array: ")
+    print(_test.array)
+else:
+    print("array vacío")
 
 if _test.flag_ok:
     print("anda")
