@@ -24,6 +24,7 @@
 #define b_2 f9
 #define a_1 f10
 #define a_2 f11
+#define k f12
 
 
  
@@ -43,8 +44,10 @@ filtro_II_d_I:
   lsi b_2, SOS, 8           # b_2 = SOS[2]
   lsi a_1, SOS, 12          # a_1 = SOS[3]
   lsi a_2, SOS, 16          # a_2 = SOS[4]
+  lsi k, SOS, 20            # a_2 = SOS[5]
 
   lsi x_0, m, 0             # tomo la muestra ya en unidades de presion
+  mul.s x_0, x_0, k         # aplico la constante del filtro a la entrada del mismo
   
   mul.s y_0, b_0, x_0      # y[n] = b_0*x[n]
   msub.s y_0, a_1, y_1      # y[n] = y[n] - a_1*y[n-1]

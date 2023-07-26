@@ -14,7 +14,9 @@
 casting_y_escala:
   entry a1,    32           # Create a window for execution
   lsi k_veces_to_p, p_k_veces_to_p, 0       # guardo la constante de conversion
+
   float.s muestra_p, m, 0                   # casting de muestra en veces
   mul.s muestra_p, muestra_p, k_veces_to_p  # conversion a presion
+  
   ssi muestra_p, m_p, 0                     # guardo la muestra en unidades de presion
   retw                      # Return from the windowed call
