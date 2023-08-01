@@ -15,7 +15,7 @@
 // constantes
 #define MPI 3.14159265358979323846  // numero pi
 #define Fs  1000.0                 // frecuencia de muestreo de la señal a fitrar
-#define N_periodos_test 150           // cantidad de periodos para el test unitario
+#define N_periodos_test 200           // cantidad de periodos para el test unitario
 
 
 struct filtro_IIR_2ord  // estructura que contiene los coeficientes deun filtro IIR de una etapa
@@ -52,7 +52,7 @@ void app_main(void)
     test_unitario_filtro();
     while(1){
         printf("no hago nada en el loop\n");
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        vTaskDelay(pdMS_TO_TICKS(10000));
     }
 }
 
@@ -109,13 +109,12 @@ void test_unitario_filtro(void){
         esp_rom_delay_us(20000);
         for(int j=0;j<N_muestras;j++){                                // recorro "N_periodos_test" periodos de la señal
             seno_int = (int)(10000.0*sin(omega*j));                   // calculo el seno (sin decimales)
-            seno = sin(omega*j);
 
             ///////////////////////////////////////////////////////////////////////////////////////////////
             /////   aplicacion y testeo del filtro con sus perifericos  ///////////////////////////////////
-            // tiempo_ciclos_filtro = esp_cpu_get_cycle_count(); // tomo los ciclos actuales del procesador
+            tiempo_ciclos_filtro = esp_cpu_get_cycle_count(); // tomo los ciclos actuales del procesador
             // hago e casting mediante assembler y paso de unidades la señal
-            // casting_y_escala(seno_int, &seno, &k_p_m);
+            casting_y_escala(seno_int, &seno, &k_p_m);
             // filtros en cascada
             filtro_II_d_I(&seno, x0, y0, &(punt_test+0)->b_0);  // etapa 0
             filtro_II_d_I(y0, x1, y1, &(punt_test+1)->b_0);     // etapa 1
@@ -124,27 +123,21 @@ void test_unitario_filtro(void){
             producto_y_acumulacion(y2, &salida, &acumulador_filtro, k_out);
 
             // calculo el tiempo que requiere esta operacion, para la ESP32 cada ciclo son 4 ns
-            // int aux = esp_cpu_get_cycle_count();
-            // tiempo_ciclos_filtro = 4*(aux - tiempo_ciclos_filtro); // NO CONSIDERO EL DESBORDE YA QUE EL TEST SE HACE UNA SOLA VEZ AL PRINCIPIO
+            int aux = esp_cpu_get_cycle_count();
+            tiempo_ciclos_filtro = 4*(aux - tiempo_ciclos_filtro); // NO CONSIDERO EL DESBORDE YA QUE EL TEST SE HACE UNA SOLA VEZ AL PRINCIPIO
             /////////////////////////////////////////////////////////////////////////////////////////////
             if(j >= ((N_periodos_test-1)*(N_muestras/N_periodos_test)-1)){                // solo en el ultimo periodo hago el rms
                 acumulador_seno = acumulador_seno +  seno*seno;       // acumulo para calcular el rms en "N_periodos_test" periodos
-                // acumulador_seno = 0;
-                // printf("linea 133");
             }else{
                 acumulador_filtro = 0;          // lo seteo a 0 si no acumulo aún
             }
-            // vTaskDelay(1);
         }
-        // acumulador_filtro =1;
-        // printf("acu filtro = %f\tacu seno = %f\n", acumulador_filtro, acumulador_seno);
         dB_test[i] = 20.0*log10(sqrt((acumulador_filtro)/(acumulador_seno)));    // calculo la atenuación del filtro
-        // printf("ACU %f\n", acumulador_filtro);
         // vTaskDelay(pdMS_TO_TICKS(10));                        // espero 20mS para la siguiente iteracion (pensado para RTOS)  
     }
 
     ////    presentación de resultados  ////
-    // printf("tiempo de filtrado [ns] = %d\n", tiempo_ciclos_filtro);
+    printf("tiempo de filtrado [ns] = %d\n", tiempo_ciclos_filtro);
     printf("f [Hz]\t\tdBA_filtro\tdBA_Ideal\n");
     for(int i=0; i<(sizeof(frecuencias)/sizeof(float)); i++){
         vTaskDelay(pdMS_TO_TICKS(20));
@@ -159,5 +152,5 @@ void test_unitario_filtro(void){
     free(y1);
     free(y2);
     free(k_out);
-    // free(punt_test);
+    free(punt_test);
 }
