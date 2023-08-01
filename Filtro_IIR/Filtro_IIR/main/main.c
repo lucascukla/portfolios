@@ -15,7 +15,7 @@
 // constantes
 #define MPI 3.14159265358979323846  // numero pi
 #define Fs  1000.0                 // frecuencia de muestreo de la señal a fitrar
-#define N_periodos_test 10           // cantidad de periodos para el test unitario
+#define N_periodos_test 150           // cantidad de periodos para el test unitario
 
 
 struct filtro_IIR_2ord  // estructura que contiene los coeficientes deun filtro IIR de una etapa
@@ -105,13 +105,9 @@ void test_unitario_filtro(void){
         acumulador_filtro = 0;                                // estando la salida del filtro estabilizada
         acumulador_seno = 0;
         
-        int N_muestras = (int)(N_periodos_test*Fs/frecuencias[i]);    // defino la cantidad de muestras para "N_periodos_test" periodos
+        uint32_t N_muestras = (uint32_t)(N_periodos_test*Fs/frecuencias[i]);    // defino la cantidad de muestras para "N_periodos_test" periodos
         esp_rom_delay_us(20000);
         for(int j=0;j<N_muestras;j++){                                // recorro "N_periodos_test" periodos de la señal
-            if(j == ((N_muestras/N_periodos_test)-1)){                // pasado 1 periodo reseteo los acumuladores, 
-                acumulador_filtro = 0;                                // estando la salida del filtro estabilizada
-                acumulador_seno = 0;
-            }
             seno_int = (int)(10000.0*sin(omega*j));                   // calculo el seno (sin decimales)
             seno = sin(omega*j);
 
@@ -131,11 +127,17 @@ void test_unitario_filtro(void){
             // int aux = esp_cpu_get_cycle_count();
             // tiempo_ciclos_filtro = 4*(aux - tiempo_ciclos_filtro); // NO CONSIDERO EL DESBORDE YA QUE EL TEST SE HACE UNA SOLA VEZ AL PRINCIPIO
             /////////////////////////////////////////////////////////////////////////////////////////////
-            
-            acumulador_seno = acumulador_seno +  seno*seno;       // acumulo para calcular el rms en "N_periodos_test" periodos
+            if(j >= ((N_periodos_test-1)*(N_muestras/N_periodos_test)-1)){                // solo en el ultimo periodo hago el rms
+                acumulador_seno = acumulador_seno +  seno*seno;       // acumulo para calcular el rms en "N_periodos_test" periodos
+                // acumulador_seno = 0;
+                // printf("linea 133");
+            }else{
+                acumulador_filtro = 0;          // lo seteo a 0 si no acumulo aún
+            }
             // vTaskDelay(1);
         }
         // acumulador_filtro =1;
+        // printf("acu filtro = %f\tacu seno = %f\n", acumulador_filtro, acumulador_seno);
         dB_test[i] = 20.0*log10(sqrt((acumulador_filtro)/(acumulador_seno)));    // calculo la atenuación del filtro
         // printf("ACU %f\n", acumulador_filtro);
         // vTaskDelay(pdMS_TO_TICKS(10));                        // espero 20mS para la siguiente iteracion (pensado para RTOS)  
