@@ -6,6 +6,7 @@
 En el presente repositorio se tiene un algoritmo de un filtro IIR de grado 2 según la estructura directa tipo 1, como se muestra en la figura, estando la ecuación a diferencias del mismo debajo de la figura.
 
 ![Forma directa tipo 1](https://github.com/lucascukla/portfolios/blob/desarrollo_filtro/Filtro_IIR/Filtro_IIR/Imagenes/diagrama_filtro.png?raw=true)
+
 $$y[n] = b_0 \cdot k \cdot x[n] + b_1 \cdot k \cdot x[n-1] + b_2 \cdot k \cdot x[n-2] - a_1 \cdot y[n-1] - a_2 \cdot y[n-2]$$
 
 El filtro se encuentra en el archivo denominado *filtro.S*, el cual está programado en assembler. Se complementa con una función de casting por hardware en caso de que la señal a filtrar tenga una interfáz de tipo entera o entera sin signo, el mismo está en el archivo denominado *cast_and_scale.S*.
