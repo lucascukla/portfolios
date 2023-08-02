@@ -34,8 +34,8 @@ struct filtro_IIR_2ord  // estructura que contiene los coeficientes deun filtro 
 // funciones
 void test_unitario_filtro(void);
 
-extern void filtro_II_d_I(float* muestra_p, float* _x, float* _y, float* _SOS);    // algoritmo de filtro IIR 2° orden forma directa tipo 1
-extern void casting_y_escala(int muestra_cuentas, float* muestra_p, float* k_veces_to_p);// recibe un entero, lo pasa a flotante mediante hardware y lo escala segun un factor de conversion
+extern void filtro_II_d_I(float* muestra_f, float* _x, float* _y, float* _SOS);    // algoritmo de filtro IIR 2° orden forma directa tipo 1
+extern void casting_y_escala(int muestra_cuentas, float* muestra_f, float* k_veces_to_f);// recibe un entero, lo pasa a flotante mediante hardware y lo escala segun un factor de conversion
 extern void producto_y_acumulacion(float *_y, float* out, float *_acu, float *_k);              // hace el producto por la constante de salida y acumula el cuadrado de la señal en un registro
 
 // defino los parametros de mi filtro notch de frecuencia central a 50 Hz
