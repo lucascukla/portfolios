@@ -58,5 +58,5 @@ extern void producto_y_acumulacion(float *_y, float* out, float *_acu, float *_k
 donde:
 - *_y*: apunta a la salida de la etapa de filtrado.
 - *out*: apunta a la salida del filtro ya escalada.
-- *_acu*: apunta a la direccion de memoria donde se guardará el acumulado de los cuadrados de la salida del filtro para calcular luego el Leq.
+- *_acu*: apunta a la direccion de memoria donde se guardará el acumulado de los cuadrados de la salida del filtro para calcular luego el valor rms si se desea.
 - *_k*: apunta a la constante de salida del filtro.
