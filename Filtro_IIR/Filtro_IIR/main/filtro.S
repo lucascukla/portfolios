@@ -46,7 +46,7 @@ filtro_II_d_I:
   lsi a_2, SOS, 16          # a_2 = SOS[4]
   lsi k, SOS, 20            # a_2 = SOS[5]
 
-  lsi x_0, m, 0             # tomo la muestra ya en unidades de presion
+  lsi x_0, m, 0             # tomo la muestra ya en unidades físicas
   ; mul.s x_0, x_0, k         # aplico la constante del filtro a la entrada del mismo
   
   mul.s y_0, b_0, x_0      # y[n] = b_0*x[n]

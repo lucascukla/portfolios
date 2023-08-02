@@ -16,7 +16,7 @@ casting_y_escala:
   lsi k_veces_to_p, p_k_veces_to_p, 0       # guardo la constante de conversion
 
   float.s muestra_p, m, 0                   # casting de muestra en veces
-  mul.s muestra_p, muestra_p, k_veces_to_p  # conversion a presion
+  mul.s muestra_p, muestra_p, k_veces_to_p  # conversion de unidades
   
-  ssi muestra_p, m_p, 0                     # guardo la muestra en unidades de presion
+  ssi muestra_p, m_p, 0                     # guardo la muestra ya en unidades físicas
   retw                      # Return from the windowed call
