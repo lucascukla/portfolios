@@ -138,7 +138,7 @@ void test_unitario_filtro(void){
 
     ////    presentación de resultados  ////
     printf("tiempo de filtrado [ns] = %d\n", tiempo_ciclos_filtro);
-    printf("f [Hz]\t\tdBA_filtro\tdBA_Ideal\n");
+    printf("f [Hz]\t\tdB_empirico\tdB_Ideal\n");
     for(int i=0; i<(sizeof(frecuencias)/sizeof(float)); i++){
         vTaskDelay(pdMS_TO_TICKS(20));
         printf("%f\t%f\t%f\n", frecuencias[i], dB_test[i], dB_ideal[i]);
